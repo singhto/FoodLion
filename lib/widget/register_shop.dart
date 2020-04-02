@@ -12,7 +12,7 @@ class _RegisterShopState extends State<RegisterShop> {
 
   // Method
   Widget showMap() {
-    LatLng centerLatLng = LatLng(18.320698, 99.398269);
+    LatLng centerLatLng = LatLng(16.751665, 101.215847);
     CameraPosition cameraPosition = CameraPosition(
       target: centerLatLng,
       zoom: 16.0,
