@@ -47,5 +47,11 @@
     <string>This app requires access to your location for register</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>This app requires access to your location for register</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Need to Upload Image</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Need to Upload Image</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Need to Upload Image</string>
 </dict>
 </plist>

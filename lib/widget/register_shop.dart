@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:foodlion/utility/my_style.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 
 class RegisterShop extends StatefulWidget {
@@ -11,6 +14,7 @@ class RegisterShop extends StatefulWidget {
 class _RegisterShopState extends State<RegisterShop> {
   // Field
   double lat, lng;
+  File file;
 
   // Method
 
@@ -156,15 +160,29 @@ class _RegisterShopState extends State<RegisterShop> {
 
   Widget cameraButton() {
     return OutlineButton.icon(
-      onPressed: () {},
+      onPressed: () => chooseImage(ImageSource.camera),
       icon: Icon(Icons.add_a_photo),
       label: Text('Camera'),
     );
   }
 
+  Future<void> chooseImage(ImageSource source) async {
+    try {
+      var object = await ImagePicker.pickImage(
+        source: source,
+        maxWidth: 800.00,
+        maxHeight: 800.00,
+      );
+
+      setState(() {
+        file = object;
+      });
+    } catch (e) {}
+  }
+
   Widget galleryButton() {
     return OutlineButton.icon(
-      onPressed: () {},
+      onPressed: () => chooseImage(ImageSource.gallery),
       icon: Icon(Icons.add_photo_alternate),
       label: Text('Gallery'),
     );
@@ -183,7 +201,8 @@ class _RegisterShopState extends State<RegisterShop> {
   Widget showPicture() {
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
-      child: Image.asset('images/picture.png'),
+      child:
+          file == null ? Image.asset('images/picture.png') : Image.file(file),
     );
   }
 

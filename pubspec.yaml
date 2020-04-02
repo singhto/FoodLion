@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   google_maps_flutter: ^0.5.25+2
   location: ^3.0.1
+  image_picker: ^0.6.4
 
 dev_dependencies:
   flutter_test:
