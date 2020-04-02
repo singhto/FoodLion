@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:foodlion/utility/my_style.dart';
+import 'package:foodlion/utility/normal_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
@@ -15,6 +16,7 @@ class _RegisterShopState extends State<RegisterShop> {
   // Field
   double lat, lng;
   File file;
+  String name, user, password, phone, urlImage;
 
   // Method
 
@@ -85,6 +87,7 @@ class _RegisterShopState extends State<RegisterShop> {
         Container(
           width: 250.0,
           child: TextField(
+            onChanged: (value) => name = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.account_box),
               hintText: 'Name :',
@@ -105,6 +108,7 @@ class _RegisterShopState extends State<RegisterShop> {
         Container(
           width: 250.0,
           child: TextField(
+            onChanged: (value) => user = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.email),
               hintText: 'User :',
@@ -125,6 +129,7 @@ class _RegisterShopState extends State<RegisterShop> {
         Container(
           width: 250.0,
           child: TextField(
+            onChanged: (value) => password = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock_open),
               hintText: 'Password :',
@@ -145,6 +150,8 @@ class _RegisterShopState extends State<RegisterShop> {
         Container(
           width: 250.0,
           child: TextField(
+            onChanged: (value) => phone = value.trim(),
+            keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.phone),
               hintText: 'Phone :',
@@ -210,7 +217,21 @@ class _RegisterShopState extends State<RegisterShop> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: RaisedButton.icon(
-        onPressed: () {},
+        onPressed: () {
+          if (file == null) {
+            normalDialog(
+                context, 'Non Choose Image', 'Please Click Camera or Gallery');
+          } else if (name == null ||
+              name.isEmpty ||
+              user == null ||
+              user.isEmpty ||
+              password == null ||
+              password.isEmpty ||
+              phone == null ||
+              phone.isEmpty) {
+            normalDialog(context, 'Have Space', 'Please Fill Every Blank');
+          } else {}
+        },
         icon: Icon(Icons.cloud_upload),
         label: Text('Register'),
       ),
