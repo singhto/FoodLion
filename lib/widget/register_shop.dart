@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodlion/utility/my_style.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class RegisterShop extends StatefulWidget {
   @override
@@ -9,19 +10,67 @@ class RegisterShop extends StatefulWidget {
 
 class _RegisterShopState extends State<RegisterShop> {
   // Field
+  double lat, lng;
 
   // Method
+
+  @override
+  void initState() {
+    super.initState();
+    findLocation();
+  }
+
+  Future<void> findLocation() async {
+    LocationData myData = await locationData();
+    setState(() {
+      lat = myData.latitude;
+      lng = myData.longitude;
+    });
+  }
+
+  Future<LocationData> locationData() async {
+    var location = Location();
+
+    try {
+      return await location.getLocation();
+    } catch (e) {
+      return null;
+    }
+  }
+
   Widget showMap() {
-    LatLng centerLatLng = LatLng(16.751665, 101.215847);
+    LatLng centerLatLng = LatLng(lat, lng);
     CameraPosition cameraPosition = CameraPosition(
       target: centerLatLng,
       zoom: 16.0,
     );
 
+    return GoogleMap(
+      initialCameraPosition: cameraPosition,
+      markers: myMarkers(),
+      onMapCreated: (value) {},
+    );
+  }
+
+  Set<Marker> myMarkers() {
+    LatLng latLng = LatLng(lat, lng);
+
+    return <Marker>[
+      Marker(
+        markerId: MarkerId('idShop'),
+        position: latLng,
+        infoWindow: InfoWindow(
+          title: 'Your Shop',
+          snippet: 'lat = $lat, lng = $lng',
+        ),
+      ),
+    ].toSet();
+  }
+
+  Widget showLocation() {
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
-      child: GoogleMap(initialCameraPosition: cameraPosition,
-      onMapCreated: (value){},),
+      child: lat == null ? MyStyle().showProgress() : showMap(),
     );
   }
 
@@ -138,6 +187,17 @@ class _RegisterShopState extends State<RegisterShop> {
     );
   }
 
+  Widget uploadButton() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: RaisedButton.icon(
+        onPressed: () {},
+        icon: Icon(Icons.cloud_upload),
+        label: Text('Register'),
+      ),
+    );
+  }
+
   Widget showListView() {
     return ListView(
       padding: EdgeInsets.all(16.0),
@@ -156,7 +216,9 @@ class _RegisterShopState extends State<RegisterShop> {
         MyStyle().mySizeBox(),
         phoneForm(),
         MyStyle().mySizeBox(),
-        showMap(),
+        showLocation(),
+        MyStyle().mySizeBox(),
+        uploadButton(),
       ],
     );
   }
