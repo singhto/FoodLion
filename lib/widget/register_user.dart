@@ -1,6 +1,14 @@
+import 'dart:io';
+import 'dart:math';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:foodlion/utility/my_constant.dart';
 import 'package:foodlion/utility/my_style.dart';
+import 'package:foodlion/utility/normal_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 
 class RegisterUser extends StatefulWidget {
   @override
@@ -9,20 +17,69 @@ class RegisterUser extends StatefulWidget {
 
 class _RegisterUserState extends State<RegisterUser> {
   // Field
+  double lat, lng;
+  File file;
+  String name, user, password, phone, urlImage;
 
   // Method
 
+  @override
+  void initState() {
+    super.initState();
+    findLocation();
+  }
+
+  Future<void> findLocation() async {
+    LocationData myData = await locationData();
+    setState(() {
+      lat = myData.latitude;
+      lng = myData.longitude;
+    });
+  }
+
+  Future<LocationData> locationData() async {
+    var location = Location();
+
+    try {
+      return await location.getLocation();
+    } catch (e) {
+      return null;
+    }
+  }
+
   Widget showMap() {
-    LatLng centerLatLng = LatLng(18.320698, 99.398269);
+    LatLng centerLatLng = LatLng(lat, lng);
     CameraPosition cameraPosition = CameraPosition(
       target: centerLatLng,
       zoom: 16.0,
     );
 
+    return GoogleMap(
+      initialCameraPosition: cameraPosition,
+      markers: myMarkers(),
+      onMapCreated: (value) {},
+    );
+  }
+
+  Set<Marker> myMarkers() {
+    LatLng latLng = LatLng(lat, lng);
+
+    return <Marker>[
+      Marker(
+        markerId: MarkerId('idShop'),
+        position: latLng,
+        infoWindow: InfoWindow(
+          title: 'Your',
+          snippet: 'lat = $lat, lng = $lng',
+        ),
+      ),
+    ].toSet();
+  }
+
+  Widget showLocation() {
     return Container(
-      height: MediaQuery.of(context).size.height * 3,
-      child: GoogleMap(initialCameraPosition: cameraPosition,
-      onMapCreated: (value){},),
+      height: MediaQuery.of(context).size.height * 0.3,
+      child: lat == null ? MyStyle().showProgress() : showMap(),
     );
   }
 
@@ -33,6 +90,7 @@ class _RegisterUserState extends State<RegisterUser> {
         Container(
           width: 250.0,
           child: TextField(
+            onChanged: (value) => name = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.account_box),
               hintText: 'Name :',
@@ -53,6 +111,7 @@ class _RegisterUserState extends State<RegisterUser> {
         Container(
           width: 250.0,
           child: TextField(
+            onChanged: (value) => user = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.email),
               hintText: 'User :',
@@ -73,6 +132,7 @@ class _RegisterUserState extends State<RegisterUser> {
         Container(
           width: 250.0,
           child: TextField(
+            onChanged: (value) => password = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock_open),
               hintText: 'Password :',
@@ -93,6 +153,8 @@ class _RegisterUserState extends State<RegisterUser> {
         Container(
           width: 250.0,
           child: TextField(
+            onChanged: (value) => phone = value.trim(),
+            keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.phone),
               hintText: 'Phone :',
@@ -108,15 +170,29 @@ class _RegisterUserState extends State<RegisterUser> {
 
   Widget cameraButton() {
     return OutlineButton.icon(
-      onPressed: () {},
+      onPressed: () => chooseImage(ImageSource.camera),
       icon: Icon(Icons.add_a_photo),
       label: Text('Camera'),
     );
   }
 
+  Future<void> chooseImage(ImageSource source) async {
+    try {
+      var object = await ImagePicker.pickImage(
+        source: source,
+        maxWidth: 800.00,
+        maxHeight: 800.00,
+      );
+
+      setState(() {
+        file = object;
+      });
+    } catch (e) {}
+  }
+
   Widget galleryButton() {
     return OutlineButton.icon(
-      onPressed: () {},
+      onPressed: () => chooseImage(ImageSource.gallery),
       icon: Icon(Icons.add_photo_alternate),
       label: Text('Gallery'),
     );
@@ -135,8 +211,68 @@ class _RegisterUserState extends State<RegisterUser> {
   Widget showPicture() {
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
-      child: Image.asset('images/user.png'),
+      child: file == null ? Image.asset('images/user.png') : Image.file(file),
     );
+  }
+
+  Widget uploadButton() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: RaisedButton.icon(
+        onPressed: () {
+          if (file == null) {
+            normalDialog(
+                context, 'Non Choose Image', 'Please Click Camera or Gallery');
+          } else if (name == null ||
+              name.isEmpty ||
+              user == null ||
+              user.isEmpty ||
+              password == null ||
+              password.isEmpty ||
+              phone == null ||
+              phone.isEmpty) {
+            normalDialog(context, 'Have Space', 'Please Fill Every Blank');
+          } else {
+            uploadImageToServer();
+          }
+        },
+        icon: Icon(Icons.cloud_upload),
+        label: Text('Register'),
+      ),
+    );
+  }
+
+  Future<void> uploadImageToServer() async {
+    String url = MyConstant().urlSaveFileUser;
+    Random random = Random();
+    int i = random.nextInt(100000);
+    String nameFile = 'user$i.jpg';
+
+    try {
+      Map<String, dynamic> map = Map();
+      map['file'] = UploadFileInfo(file, nameFile);
+      FormData formData = FormData.from(map);
+      await Dio()
+          .post(url, data: formData)
+          .then((response) => insertDtaToMySQL(nameFile))
+          .catchError(() {});
+    } catch (e) {}
+  }
+
+  Future<void> insertDtaToMySQL(String string) async {
+    String urlAPI =
+        '${MyConstant().urlAddUser}?isAdd=true&Name=$name&User=$user&Password=$password&UrlShop=urlImage&Lat=$lat&Lng=$lng';
+
+    try {
+      await Dio().get(urlAPI).then(
+        (response) {
+          if (response.toString() == 'true') {
+          } else {
+            normalDialog(context, 'Register False', 'Please Try Again');
+          }
+        },
+      );
+    } catch (e) {}
   }
 
   Widget showListView() {
@@ -157,7 +293,9 @@ class _RegisterUserState extends State<RegisterUser> {
         MyStyle().mySizeBox(),
         phoneForm(),
         MyStyle().mySizeBox(),
-        showMap(),
+        showLocation(),
+        MyStyle().mySizeBox(),
+        uploadButton(),
       ],
     );
   }
