@@ -7,7 +7,6 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
-
   // Field
 
   // Method
@@ -19,15 +18,13 @@ class _MainHomeState extends State<MainHome> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return ListView(
-        children: <Widget>[
-          showBanner(),
-          MyStyle().showTitle('Shop'),
-        ],
-      );
+      children: <Widget>[
+        showBanner(),
+        MyStyle().showTitle('Shop'),
+      ],
+    );
   }
 }
