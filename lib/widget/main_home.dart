@@ -53,14 +53,19 @@ class _MainHomeState extends State<MainHome> {
   }
 
   Widget createCard(UserShopModel model) {
-    return Card(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          showImageShop(model),
-          showName(model),
-        ],
+    return GestureDetector(
+      onTap: () {
+        print('You Click ${model.id}');
+      },
+      child: Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            showImageShop(model),
+            showName(model),
+          ],
+        ),
       ),
     );
   }
