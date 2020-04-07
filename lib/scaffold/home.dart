@@ -80,6 +80,7 @@ class _HomeState extends State<Home> {
         menuHome(),
         menuMyFood(),
         menuAddMyFood(),
+        menuSignOut(),
       ],
     );
   }
@@ -121,6 +122,31 @@ class _HomeState extends State<Home> {
         Navigator.of(context).pop();
       },
     );
+  }
+
+    Widget menuSignOut() {
+    return ListTile(
+      leading: Icon(Icons.exit_to_app, color: Colors.red,),
+      title: Text('Sign Out', style: TextStyle(color: Colors.red),),
+      subtitle: Text('Sign Out and Move to Authen',style: TextStyle(color: Colors.red.shade400),),
+      onTap: () {
+        Navigator.of(context).pop();
+        signOutProcess();
+      },
+    );
+  }
+
+  Future<void> signOutProcess()async{
+    try {
+
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.clear();
+
+      MaterialPageRoute route = MaterialPageRoute(builder: (value)=>Home());
+      Navigator.of(context).pushAndRemoveUntil(route, (value)=>false);
+      
+    } catch (e) {
+    }
   }
 
   Widget menuSignUp() {
