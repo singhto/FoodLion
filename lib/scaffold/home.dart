@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foodlion/widget/add_my_food.dart';
 import 'package:foodlion/widget/main_home.dart';
+import 'package:foodlion/widget/my_food.dart';
 import 'package:foodlion/widget/register_delivery.dart';
 import 'package:foodlion/widget/register_shop.dart';
 import 'package:foodlion/widget/register_user.dart';
@@ -9,6 +11,9 @@ import 'package:foodlion/widget/signin_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
+  final Widget currentWidget;
+  Home({Key key, this.currentWidget}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -21,39 +26,100 @@ class _HomeState extends State<Home> {
 
   // Method
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    checkWidget();
     checkLogin();
   }
 
-  Future<void> checkLogin()async{
+  void checkWidget(){
+    Widget myWidget = widget.currentWidget;
+    if (myWidget != null) {
+      setState(() {
+        cuttentWidget = myWidget;
+      });
+    }
+  }
+
+  Future<void> checkLogin() async {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       nameLogin = preferences.getString('Name');
       avatar = preferences.getString('UrlShop');
       print('nameLogin = $nameLogin, avatar = $avatar');
 
-      if (!(nameLogin == null || nameLogin.isEmpty)){
+      if (!(nameLogin == null || nameLogin.isEmpty)) {
         setState(() {
           statusLogin = true;
         });
       }
-
-
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   Widget showDrawer() {
     return Drawer(
-      child: ListView(
-        children: <Widget>[
-          showHead(),
-          menuHome(),
-          menuSignIn(),
-          menuSignUp(),
-        ],
-      ),
+      child: statusLogin ? shopList() : generalList(),
+    );
+  }
+
+  ListView generalList() {
+    return ListView(
+      children: <Widget>[
+        showHead(),
+        menuHome(),
+        menuSignIn(),
+        menuSignUp(),
+      ],
+    );
+  }
+
+  ListView shopList() {
+    return ListView(
+      children: <Widget>[
+        showHead(),
+        menuHome(),
+        menuMyFood(),
+        menuAddMyFood(),
+      ],
+    );
+  }
+
+  Widget menuMyFood() {
+    return ListTile(
+      leading: Icon(Icons.fastfood),
+      title: Text('Menu Food'),
+      subtitle: Text('เมนูร้านอาหารของเรา'),
+      onTap: () {
+        Navigator.of(context).pop();
+        setState(() {
+          cuttentWidget = MyFood();
+        });
+      },
+    );
+  }
+
+  Widget menuAddMyFood() {
+    return ListTile(
+      leading: Icon(Icons.add),
+      title: Text('Add Menu Food'),
+      subtitle: Text('เพิ่ม เมนู ร้านอหารของเรา'),
+      onTap: () {
+        Navigator.of(context).pop();
+        setState(() {
+          cuttentWidget = AddMyFood();
+        });
+      },
+    );
+  }
+
+  Widget menu() {
+    return ListTile(
+      leading: Icon(Icons.android),
+      title: Text('text'),
+      subtitle: Text('sub text'),
+      onTap: () {
+        Navigator.of(context).pop();
+      },
     );
   }
 
@@ -192,11 +258,15 @@ class _HomeState extends State<Home> {
 
   Widget showHead() {
     return UserAccountsDrawerHeader(
-      currentAccountPicture: showLogo(),
-      accountName: statusLogin ? Text(nameLogin) : Text('Guesr'),
+      currentAccountPicture: avatar == null ? showLogo() : showAvatar(),
+      accountName: statusLogin ? Text(nameLogin) : Text('Guest'),
       accountEmail: Text('Login'),
     );
   }
+
+  Widget showAvatar() => CircleAvatar(
+        backgroundImage: NetworkImage(avatar),
+      );
 
   @override
   Widget build(BuildContext context) {
