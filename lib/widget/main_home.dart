@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:foodlion/models/user_shop_model.dart';
+import 'package:foodlion/scaffold/home.dart';
 import 'package:foodlion/utility/my_constant.dart';
 import 'package:foodlion/utility/my_style.dart';
+import 'package:foodlion/widget/my_food.dart';
 
 class MainHome extends StatefulWidget {
   @override
@@ -17,7 +19,6 @@ class _MainHomeState extends State<MainHome> {
   List<Widget> showWidgets = List();
 
   // Method
-
   @override
   void initState() {
     super.initState();
@@ -44,10 +45,21 @@ class _MainHomeState extends State<MainHome> {
 
   Widget showImageShop(UserShopModel model) {
     return Container(
-      width: 60.0,
-      height: 60.0,
+      width: 80.0,
+      height: 80.0,
       child: CircleAvatar(
         backgroundImage: NetworkImage(model.urlShop),
+      ),
+    );
+  }
+
+  Widget testListView() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: showWidgets.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Text('Test');
+        },
       ),
     );
   }
@@ -56,6 +68,14 @@ class _MainHomeState extends State<MainHome> {
     return GestureDetector(
       onTap: () {
         print('You Click ${model.id}');
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (value) => Home(
+            currentWidget: MyFood(
+              idShop: model.id,
+            ),
+          ),
+        );
+        Navigator.of(context).pushAndRemoveUntil(route, (value) => false);
       },
       child: Card(
         child: Column(
@@ -73,7 +93,7 @@ class _MainHomeState extends State<MainHome> {
   Text showName(UserShopModel model) => Text(
         model.name,
         style: TextStyle(
-          fontSize: 16.0,
+          fontSize: 18.0,
         ),
       );
 
@@ -82,9 +102,9 @@ class _MainHomeState extends State<MainHome> {
         ? MyStyle().showProgress()
         : Expanded(
             child: GridView.extent(
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              maxCrossAxisExtent: 130.0,
+              mainAxisSpacing: 3.0,
+              crossAxisSpacing: 3.0,
+              maxCrossAxisExtent: 160.0,
               children: showWidgets,
             ),
           );
@@ -105,7 +125,7 @@ class _MainHomeState extends State<MainHome> {
     return Column(
       children: <Widget>[
         showBanner(),
-        MyStyle().showTitle('Shop'),
+        MyStyle().showTitle('ร้านอาหารใกล้คุณ'),
         showShop(),
       ],
     );

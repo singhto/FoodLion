@@ -94,7 +94,7 @@ class _RegisterShopState extends State<RegisterShop> {
             onChanged: (value) => name = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.account_box),
-              hintText: 'Name :',
+              hintText: 'ชื่อร้านของคุณ :',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -115,7 +115,7 @@ class _RegisterShopState extends State<RegisterShop> {
             onChanged: (value) => user = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.email),
-              hintText: 'User :',
+              hintText: 'Username :',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -158,7 +158,7 @@ class _RegisterShopState extends State<RegisterShop> {
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.phone),
-              hintText: 'Phone :',
+              hintText: 'เบอร์โทรศัพท์ :',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -173,7 +173,7 @@ class _RegisterShopState extends State<RegisterShop> {
     return OutlineButton.icon(
       onPressed: () => chooseImage(ImageSource.camera),
       icon: Icon(Icons.add_a_photo),
-      label: Text('Camera'),
+      label: Text('ถ่ายภาพร้าน'),
     );
   }
 
@@ -195,7 +195,7 @@ class _RegisterShopState extends State<RegisterShop> {
     return OutlineButton.icon(
       onPressed: () => chooseImage(ImageSource.gallery),
       icon: Icon(Icons.add_photo_alternate),
-      label: Text('Gallery'),
+      label: Text('คลังภาพ'),
     );
   }
 
@@ -224,7 +224,7 @@ class _RegisterShopState extends State<RegisterShop> {
         onPressed: () {
           if (file == null) {
             normalDialog(
-                context, 'Non Choose Image', 'Please Click Camera or Gallery');
+                context, 'ไม่ได้เลือกรูปภาพ', 'กรุณา ถ่ายภาพร้านสวยๆ หรือ ภาพอาหารเด่น');
           } else if (name == null ||
               name.isEmpty ||
               user == null ||
@@ -233,13 +233,13 @@ class _RegisterShopState extends State<RegisterShop> {
               password.isEmpty ||
               phone == null ||
               phone.isEmpty) {
-            normalDialog(context, 'Have Space', 'Please Fill Every Blank');
+            normalDialog(context, 'มีที่ว่าง', 'กรุณากรอกโดยไม่เว้นช่องว่าง');
           } else {
             uploadImageToServer();
           }
         },
         icon: Icon(Icons.cloud_upload),
-        label: Text('Register'),
+        label: Text('บันทึกข้อมูล'),
       ),
     );
   }
@@ -288,11 +288,11 @@ class _RegisterShopState extends State<RegisterShop> {
     return ListView(
       padding: EdgeInsets.all(16.0),
       children: <Widget>[
-        MyStyle().showTitle('Shop Picture'),
+        MyStyle().showTitle('ภาพร้านของคุณ'),
         showPicture(),
         showButton(),
         MyStyle().mySizeBox(),
-        MyStyle().showTitle('Information'),
+        MyStyle().showTitle('ข้อมูลร้านของคุณ'),
         MyStyle().mySizeBox(),
         nameForm(),
         MyStyle().mySizeBox(),

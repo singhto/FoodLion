@@ -261,7 +261,7 @@ class _RegisterUserState extends State<RegisterUser> {
 
   Future<void> insertDtaToMySQL(String string) async {
     String urlAPI =
-        '${MyConstant().urlAddUser}?isAdd=true&Name=$name&User=$user&Password=$password&UrlShop=urlImage&Lat=$lat&Lng=$lng';
+        '${MyConstant().urlAddUser}?isAdd=true&Name=$name&User=$user&Password=$password&UrlShop=$urlImage&Lat=$lat&Lng=$lng';
 
     try {
       await Dio().get(urlAPI).then(

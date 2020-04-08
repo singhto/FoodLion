@@ -52,8 +52,8 @@ class _AddMyFoodState extends State<AddMyFood> {
           child: TextField(
             onChanged: (value) => nameFood = value.trim(),
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.account_box),
-              hintText: 'Name :',
+              prefixIcon: Icon(Icons.fastfood),
+              hintText: 'ชื่ออาหาร :',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -73,8 +73,8 @@ class _AddMyFoodState extends State<AddMyFood> {
           child: TextField(
             onChanged: (value) => detailFood = value.trim(),
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.account_box),
-              hintText: 'Detail :',
+              prefixIcon: Icon(Icons.details),
+              hintText: 'รายละเอียด :',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -96,7 +96,7 @@ class _AddMyFoodState extends State<AddMyFood> {
             onChanged: (value) => priceFood = value.trim(),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.attach_money),
-              hintText: 'Price :',
+              hintText: 'ราคา :',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -111,7 +111,7 @@ class _AddMyFoodState extends State<AddMyFood> {
     return OutlineButton.icon(
       onPressed: () => chooseImage(ImageSource.camera),
       icon: Icon(Icons.add_a_photo),
-      label: Text('Camera'),
+      label: Text('ถ่ายภาพ'),
     );
   }
 
@@ -133,7 +133,7 @@ class _AddMyFoodState extends State<AddMyFood> {
     return OutlineButton.icon(
       onPressed: () => chooseImage(ImageSource.gallery),
       icon: Icon(Icons.add_photo_alternate),
-      label: Text('Gallery'),
+      label: Text('คลังภาพ'),
     );
   }
 

@@ -6,6 +6,8 @@ import 'package:foodlion/models/food_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyFood extends StatefulWidget {
+  final String idShop;
+  MyFood({Key key, this.idShop}) : super(key: key);
   @override
   _MyFoodState createState() => _MyFoodState();
 }
@@ -14,11 +16,13 @@ class _MyFoodState extends State<MyFood> {
   // Field
   bool statusData = true;
   List<FoodModel> foodModels = List();
+  String myIdShop;
 
   // Method
   @override
   void initState() {
     super.initState();
+    myIdShop = widget.idShop;
     readAllFood();
   }
 
@@ -31,10 +35,15 @@ class _MyFoodState extends State<MyFood> {
 
   Future<void> readAllFood() async {
     String idShop = await getIdShop();
+    if (myIdShop != null) {
+      idShop = myIdShop;
+    }
+    print('idShop ===> $idShop');
     String url =
         'http://movehubs.com/app/getFoodWhereIdShop.php?isAdd=true&idShop=$idShop';
 
     Response response = await Dio().get(url);
+    print('response ===>> $response');
     if (response.toString() != 'null') {
       var result = json.decode(response.data);
       print('result ===>>> $result');
@@ -77,6 +86,7 @@ class _MyFoodState extends State<MyFood> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             showNameFood(index),
+            showDetailFood(index),
             showPrice(index),
           ],
         ),
@@ -86,40 +96,74 @@ class _MyFoodState extends State<MyFood> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Text(
-            'ราคา = ${foodModels[index].priceFood} บาท',
+            'ราคา : ${foodModels[index].priceFood} บาท',
             style: TextStyle(
               fontSize: 18.0,
+              fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColor,
             ),
           ),
         ],
       );
 
-  Widget showNameFood(int index) => Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(width: MediaQuery.of(context).size.width*0.5-30,
-            child: Text(
-              foodModels[index].nameFood,
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColorDark,
-              ),
-            ),
-          ),
-        ],
-      );
+  // Widget showDetailFood(int index) => Row(
+  //       mainAxisAlignment: MainAxisAlignment.end,
+  //       children: <Widget>[
+  //         Container(
+  //           width: MediaQuery.of(context).size.width * 0.5 - 20,
+  //           child: Text(
+  //             foodModels[index].detailFood,
+  //             style: TextStyle(
+  //               fontSize: 18.0,
+  //               fontWeight: FontWeight.bold,
+  //               color: Theme.of(context).primaryColor,
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     );
 
-  Widget showImageFood(int index) => Container(
-        padding: EdgeInsets.all(10.0),
-        width: MediaQuery.of(context).size.width * 0.5,
-        height: MediaQuery.of(context).size.width * 0.4,
-        child: Image.network(
-          foodModels[index].urlFood,
-          fit: BoxFit.cover,
+  Widget showDetailFood(int index) {
+    String string = foodModels[index].detailFood;
+    if (string.length > 100) {
+      string = string.substring(0, 99);
+      string = '$string ...';
+    }
+
+    return Text(string);
+  }
+
+  Widget showNameFood(int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Text(
+          foodModels[index].nameFood,
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).primaryColorDark,
+          ),
         ),
-      );
+      ],
+    );
+  }
+
+  Widget showImageFood(int index) {
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      width: MediaQuery.of(context).size.width * 0.5,
+      height: MediaQuery.of(context).size.width * 0.5,
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+            image: DecorationImage(
+              image: NetworkImage(foodModels[index].urlFood),
+              fit: BoxFit.cover,
+            )),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

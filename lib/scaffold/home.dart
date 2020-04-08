@@ -88,8 +88,8 @@ class _HomeState extends State<Home> {
   Widget menuMyFood() {
     return ListTile(
       leading: Icon(Icons.fastfood),
-      title: Text('Menu Food'),
-      subtitle: Text('เมนูร้านอาหารของเรา'),
+      title: Text('Menu Food',style: TextStyle(fontSize: 20.0),),
+      subtitle: Text('เมนูอาหารของฉัน',style: TextStyle(fontSize: 16.0),),
       onTap: () {
         Navigator.of(context).pop();
         setState(() {
@@ -102,8 +102,8 @@ class _HomeState extends State<Home> {
   Widget menuAddMyFood() {
     return ListTile(
       leading: Icon(Icons.add),
-      title: Text('Add Menu Food'),
-      subtitle: Text('เพิ่ม เมนู ร้านอหารของเรา'),
+      title: Text('Add Menu Food',style: TextStyle(fontSize: 20.0),),
+      subtitle: Text('เพิ่ม เมนู อาหาร',style: TextStyle(fontSize: 16.0),),
       onTap: () {
         Navigator.of(context).pop();
         setState(() {
@@ -127,8 +127,8 @@ class _HomeState extends State<Home> {
     Widget menuSignOut() {
     return ListTile(
       leading: Icon(Icons.exit_to_app, color: Colors.red,),
-      title: Text('Sign Out', style: TextStyle(color: Colors.red),),
-      subtitle: Text('Sign Out and Move to Authen',style: TextStyle(color: Colors.red.shade400),),
+      title: Text('ออกจากระบบ', style: TextStyle(color: Colors.red),),
+      subtitle: Text('กดที่นี่ เพื่อออกจากระบบ',style: TextStyle(color: Colors.red.shade400),),
       onTap: () {
         Navigator.of(context).pop();
         signOutProcess();
@@ -263,8 +263,8 @@ class _HomeState extends State<Home> {
   Widget menuHome() {
     return ListTile(
       leading: Icon(Icons.home),
-      title: Text('Home'),
-      subtitle: Text('Show List Shop'),
+      title: Text('หน้าแรก',style: TextStyle(fontSize: 20.0),),
+      subtitle: Text('วันนี้กินอะไรดี',style: TextStyle(fontSize: 16.0),),
       onTap: () {
         setState(() {
           Navigator.of(context).pop();

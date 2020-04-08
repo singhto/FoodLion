@@ -76,6 +76,7 @@ class _SignInshopState extends State<SignInshop> {
 
     try {
       Response response = await Dio().get(url);
+      
       if (response.toString() == 'null') {
         normalDialog(context, 'User False', 'No $user in my Database');
       } else {
@@ -85,7 +86,8 @@ class _SignInshopState extends State<SignInshop> {
           if (password == model.password) {
             successLogin(model);
           } else {
-            normalDialog(context, 'Password False', 'Please Try Agains');
+            normalDialog(
+                context, 'Password False', 'Please Try Agains Password False');
           }
         }
       }
