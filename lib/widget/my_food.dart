@@ -60,7 +60,10 @@ class _MyFoodState extends State<MyFood> {
 
   Widget showNoData() {
     return Center(
-      child: Text('No Menu Please Add Food'),
+      child: Text(
+        'ไม่มีรายการอาหาร กรุณาเพิ่ม',
+        style: TextStyle(fontSize: 24.0),
+      ),
     );
   }
 
@@ -106,32 +109,20 @@ class _MyFoodState extends State<MyFood> {
         ],
       );
 
-  // Widget showDetailFood(int index) => Row(
-  //       mainAxisAlignment: MainAxisAlignment.end,
-  //       children: <Widget>[
-  //         Container(
-  //           width: MediaQuery.of(context).size.width * 0.5 - 20,
-  //           child: Text(
-  //             foodModels[index].detailFood,
-  //             style: TextStyle(
-  //               fontSize: 18.0,
-  //               fontWeight: FontWeight.bold,
-  //               color: Theme.of(context).primaryColor,
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     );
-
-  Widget showDetailFood(int index) {
-    String string = foodModels[index].detailFood;
-    if (string.length > 100) {
-      string = string.substring(0, 99);
-      string = '$string ...';
-    }
-
-    return Text(string);
-  }
+  Widget showDetailFood(int index) => Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width * 0.5 - 20,
+            child: Text(
+              foodModels[index].detailFood,
+              style: TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+          ),
+        ],
+      );
 
   Widget showNameFood(int index) {
     return Row(

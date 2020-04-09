@@ -88,7 +88,7 @@ class _HomeState extends State<Home> {
   Widget menuMyFood() {
     return ListTile(
       leading: Icon(Icons.fastfood),
-      title: Text('Menu Food',style: TextStyle(fontSize: 20.0),),
+      title: Text('รายการอาหาร',style: TextStyle(fontSize: 20.0),),
       subtitle: Text('เมนูอาหารของฉัน',style: TextStyle(fontSize: 16.0),),
       onTap: () {
         Navigator.of(context).pop();
@@ -102,8 +102,8 @@ class _HomeState extends State<Home> {
   Widget menuAddMyFood() {
     return ListTile(
       leading: Icon(Icons.add),
-      title: Text('Add Menu Food',style: TextStyle(fontSize: 20.0),),
-      subtitle: Text('เพิ่ม เมนู อาหาร',style: TextStyle(fontSize: 16.0),),
+      title: Text('เพิ่ม รายการ อาหาร',style: TextStyle(fontSize: 20.0),),
+      subtitle: Text('เพิ่มข้อมูลรายการอาหารของฉัน',style: TextStyle(fontSize: 16.0),),
       onTap: () {
         Navigator.of(context).pop();
         setState(() {
@@ -152,8 +152,8 @@ class _HomeState extends State<Home> {
   Widget menuSignUp() {
     return ListTile(
       leading: Icon(Icons.android),
-      title: Text('Sign Up'),
-      subtitle: Text('For New Register'),
+      title: Text('สมัครใช้บริการ'),
+      subtitle: Text('สมัครใช้บริการ'),
       onTap: () {
         Navigator.of(context).pop();
         chooseRegister('Register', true);
@@ -164,8 +164,8 @@ class _HomeState extends State<Home> {
   Widget menuSignIn() {
     return ListTile(
       leading: Icon(Icons.fingerprint),
-      title: Text('Sign In'),
-      subtitle: Text('For Sign In'),
+      title: Text('เข้าสู่ระบบ'),
+      subtitle: Text('กรุณาเข้าสู่ระบบก่อน'),
       onTap: () {
         Navigator.of(context).pop();
         chooseRegister('Login', false);
@@ -195,7 +195,7 @@ class _HomeState extends State<Home> {
                   Navigator.of(context).pop();
                 },
                 icon: Icon(Icons.check_box_outline_blank),
-                label: Text('User'),
+                label: Text('สมัคร เพื่อสั่งอาหาร'),
               ),
             ],
           ),
@@ -218,7 +218,7 @@ class _HomeState extends State<Home> {
                   Navigator.of(context).pop();
                 },
                 icon: Icon(Icons.check_box_outline_blank),
-                label: Text('Shop'),
+                label: Text('สมัคร เพื่อขายอาหาร'),
               ),
             ],
           ),
@@ -241,7 +241,7 @@ class _HomeState extends State<Home> {
                   Navigator.of(context).pop();
                 },
                 icon: Icon(Icons.check_box_outline_blank),
-                label: Text('Delivery'),
+                label: Text('สมัคร เพื่อส่งอาหาร'),
               ),
             ],
           ),
