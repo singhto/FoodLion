@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:foodlion/models/banner_model.dart';
 import 'package:foodlion/models/user_shop_model.dart';
 import 'package:foodlion/scaffold/home.dart';
 import 'package:foodlion/utility/my_constant.dart';
@@ -17,12 +20,35 @@ class _MainHomeState extends State<MainHome> {
   // Field
   List<UserShopModel> userShopModels = List();
   List<Widget> showWidgets = List();
+  List<BannerModel> bannerModels = List();
+  List<Widget> showBanners = List();
 
   // Method
   @override
   void initState() {
     super.initState();
+    readBanner();
     readShopThread();
+  }
+
+  Future<void> readBanner() async {
+    String url = MyConstant().urlGetAllBanner;
+    try {
+      Response response = await Dio().get(url);
+      var result = json.decode(response.data);
+      for (var map in result) {
+        BannerModel model = BannerModel.fromJson(map);
+        Widget bannerWieget = createBanner(model);
+        setState(() {
+          bannerModels.add(model);
+          showBanners.add(bannerWieget);
+        });
+      }
+    } catch (e) {}
+  }
+
+  Widget createBanner(BannerModel model) {
+    return CachedNetworkImage(imageUrl: model.pathImage);
   }
 
   Future<void> readShopThread() async {
@@ -111,14 +137,16 @@ class _MainHomeState extends State<MainHome> {
   }
 
   Widget showBanner() {
-    return DrawerHeader(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('images/cook.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
+    return showBanners.length == 0
+        ? MyStyle().showProgress()
+        : CarouselSlider(
+            items: showBanners,
+            enlargeCenterPage: true,
+            aspectRatio: 16/9,
+            pauseAutoPlayOnTouch: Duration(seconds: 3),
+            autoPlay: true,
+            autoPlayAnimationDuration: Duration(seconds: 3),
+          );
   }
 
   @override

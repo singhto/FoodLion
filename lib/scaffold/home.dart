@@ -11,8 +11,7 @@ import 'package:foodlion/widget/signin_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
+
 
 class Home extends StatefulWidget {
   final Widget currentWidget;

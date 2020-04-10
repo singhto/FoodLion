@@ -49,7 +49,7 @@ class _SignInshopState extends State<SignInshop> {
             ),
             Container(
               width: 250.0,
-              child: RaisedButton.icon(
+              child: RaisedButton.icon(color: MyStyle().primaryColor,
                 onPressed: () {
                   if (user == null ||
                       user.isEmpty ||
@@ -61,8 +61,8 @@ class _SignInshopState extends State<SignInshop> {
                     checkAuthen();
                   }
                 },
-                icon: Icon(Icons.fingerprint),
-                label: Text('Sign In'),
+                icon: Icon(Icons.fingerprint, color: Colors.white,),
+                label: Text('Sign In', style: MyStyle().h2StyleWhite,),
               ),
             ),
           ],
