@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodlion/widget/add_my_food.dart';
 import 'package:foodlion/widget/main_home.dart';
 import 'package:foodlion/widget/my_food.dart';
+import 'package:foodlion/widget/order_shop.dart';
 import 'package:foodlion/widget/register_delivery.dart';
 import 'package:foodlion/widget/register_shop.dart';
 import 'package:foodlion/widget/register_user.dart';
@@ -11,7 +12,6 @@ import 'package:foodlion/widget/signin_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utility/my_style.dart';
-
 
 class Home extends StatefulWidget {
   final Widget currentWidget;
@@ -54,6 +54,7 @@ class _HomeState extends State<Home> {
       if (!(nameLogin == null || nameLogin.isEmpty)) {
         setState(() {
           statusLogin = true;
+          cuttentWidget = OrderShop();
         });
       }
     } catch (e) {}
@@ -80,7 +81,7 @@ class _HomeState extends State<Home> {
     return ListView(
       children: <Widget>[
         showHead(),
-        menuHome(),
+        menuOrderShop(),
         menuMyFood(),
         menuAddMyFood(),
         menuSignOut(),
@@ -90,14 +91,18 @@ class _HomeState extends State<Home> {
 
   Widget menuMyFood() {
     return ListTile(
-      leading: Icon(Icons.fastfood),
+      leading: Icon(
+        Icons.restaurant_menu,
+        size: 36.0,
+        color: MyStyle().dartColor,
+      ),
       title: Text(
         'รายการอาหาร',
-        style: TextStyle(fontSize: 20.0),
+        style: MyStyle().h2Style,
       ),
       subtitle: Text(
         'เมนูอาหารของฉัน',
-        style: TextStyle(fontSize: 16.0),
+        style: MyStyle().h3StylePrimary,
       ),
       onTap: () {
         Navigator.of(context).pop();
@@ -110,14 +115,18 @@ class _HomeState extends State<Home> {
 
   Widget menuAddMyFood() {
     return ListTile(
-      leading: Icon(Icons.add),
+      leading: Icon(
+        Icons.playlist_add,
+        size: 36.0,
+        color: MyStyle().dartColor,
+      ),
       title: Text(
         'เพิ่ม รายการ อาหาร',
-        style: TextStyle(fontSize: 20.0),
+        style: MyStyle().h2Style,
       ),
       subtitle: Text(
         'เพิ่มข้อมูลรายการอาหารของฉัน',
-        style: TextStyle(fontSize: 16.0),
+        style: MyStyle().h3StylePrimary,
       ),
       onTap: () {
         Navigator.of(context).pop();
@@ -130,11 +139,45 @@ class _HomeState extends State<Home> {
 
   Widget menu() {
     return ListTile(
-      leading: Icon(Icons.android),
-      title: Text('text'),
-      subtitle: Text('sub text'),
+      leading: Icon(
+        Icons.android,
+        size: 36.0,
+        color: MyStyle().dartColor,
+      ),
+      title: Text(
+        'text',
+        style: MyStyle().h2Style,
+      ),
+      subtitle: Text(
+        'sub text',
+        style: MyStyle().h3StylePrimary,
+      ),
       onTap: () {
         Navigator.of(context).pop();
+      },
+    );
+  }
+
+  Widget menuOrderShop() {
+    return ListTile(
+      leading: Icon(
+        Icons.playlist_add_check,
+        size: 36.0,
+        color: MyStyle().dartColor,
+      ),
+      title: Text(
+        'รายการอาหาร ที่ลูกค้าสั่ง',
+        style: MyStyle().h2Style,
+      ),
+      subtitle: Text(
+        'รายการอาหาร ที่ลูกค้าสั่งมา แสดงสถานะ',
+        style: MyStyle().h3StylePrimary,
+      ),
+      onTap: () {
+        Navigator.of(context).pop();
+        setState(() {
+          cuttentWidget = OrderShop();
+        });
       },
     );
   }
@@ -143,15 +186,16 @@ class _HomeState extends State<Home> {
     return ListTile(
       leading: Icon(
         Icons.exit_to_app,
-        color: Colors.red,
+        color: MyStyle().dartColor,
+        size: 36.0,
       ),
       title: Text(
         'ออกจากระบบ',
-        style: TextStyle(color: Colors.red),
+        style: MyStyle().h2Style,
       ),
       subtitle: Text(
         'กดที่นี่ เพื่อออกจากระบบ',
-        style: TextStyle(color: Colors.red.shade400),
+        style: MyStyle().h3StylePrimary,
       ),
       onTap: () {
         Navigator.of(context).pop();
@@ -243,8 +287,14 @@ class _HomeState extends State<Home> {
                   }
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.touch_app, color: MyStyle().primaryColor,),
-                label: Text('เพื่อสั่งอาหาร',style: MyStyle().h2StylePrimary,),
+                icon: Icon(
+                  Icons.touch_app,
+                  color: MyStyle().primaryColor,
+                ),
+                label: Text(
+                  'เพื่อสั่งอาหาร',
+                  style: MyStyle().h2StylePrimary,
+                ),
               ),
             ],
           ),
@@ -266,8 +316,14 @@ class _HomeState extends State<Home> {
                   }
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.fastfood, color: MyStyle().primaryColor,),
-                label: Text('เพื่อขายอาหาร',style: MyStyle().h2StylePrimary,),
+                icon: Icon(
+                  Icons.fastfood,
+                  color: MyStyle().primaryColor,
+                ),
+                label: Text(
+                  'เพื่อขายอาหาร',
+                  style: MyStyle().h2StylePrimary,
+                ),
               ),
             ],
           ),
@@ -289,8 +345,14 @@ class _HomeState extends State<Home> {
                   }
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.directions_bike, color: MyStyle().primaryColor,),
-                label: Text('เพื่อส่งอาหาร',style: MyStyle().h2StylePrimary,),
+                icon: Icon(
+                  Icons.directions_bike,
+                  color: MyStyle().primaryColor,
+                ),
+                label: Text(
+                  'เพื่อส่งอาหาร',
+                  style: MyStyle().h2StylePrimary,
+                ),
               ),
             ],
           ),
@@ -314,7 +376,10 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel', style: MyStyle().h2Style,),
+            child: Text(
+              'Cancel',
+              style: MyStyle().h2Style,
+            ),
           ),
         ],
       ),
