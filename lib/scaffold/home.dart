@@ -10,6 +10,10 @@ import 'package:foodlion/widget/signin_shop.dart';
 import 'package:foodlion/widget/signin_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+
 class Home extends StatefulWidget {
   final Widget currentWidget;
   Home({Key key, this.currentWidget}) : super(key: key);
@@ -32,7 +36,7 @@ class _HomeState extends State<Home> {
     checkLogin();
   }
 
-  void checkWidget(){
+  void checkWidget() {
     Widget myWidget = widget.currentWidget;
     if (myWidget != null) {
       setState(() {
@@ -88,8 +92,14 @@ class _HomeState extends State<Home> {
   Widget menuMyFood() {
     return ListTile(
       leading: Icon(Icons.fastfood),
-      title: Text('รายการอาหาร',style: TextStyle(fontSize: 20.0),),
-      subtitle: Text('เมนูอาหารของฉัน',style: TextStyle(fontSize: 16.0),),
+      title: Text(
+        'รายการอาหาร',
+        style: TextStyle(fontSize: 20.0),
+      ),
+      subtitle: Text(
+        'เมนูอาหารของฉัน',
+        style: TextStyle(fontSize: 16.0),
+      ),
       onTap: () {
         Navigator.of(context).pop();
         setState(() {
@@ -102,8 +112,14 @@ class _HomeState extends State<Home> {
   Widget menuAddMyFood() {
     return ListTile(
       leading: Icon(Icons.add),
-      title: Text('เพิ่ม รายการ อาหาร',style: TextStyle(fontSize: 20.0),),
-      subtitle: Text('เพิ่มข้อมูลรายการอาหารของฉัน',style: TextStyle(fontSize: 16.0),),
+      title: Text(
+        'เพิ่ม รายการ อาหาร',
+        style: TextStyle(fontSize: 20.0),
+      ),
+      subtitle: Text(
+        'เพิ่มข้อมูลรายการอาหารของฉัน',
+        style: TextStyle(fontSize: 16.0),
+      ),
       onTap: () {
         Navigator.of(context).pop();
         setState(() {
@@ -124,11 +140,20 @@ class _HomeState extends State<Home> {
     );
   }
 
-    Widget menuSignOut() {
+  Widget menuSignOut() {
     return ListTile(
-      leading: Icon(Icons.exit_to_app, color: Colors.red,),
-      title: Text('ออกจากระบบ', style: TextStyle(color: Colors.red),),
-      subtitle: Text('กดที่นี่ เพื่อออกจากระบบ',style: TextStyle(color: Colors.red.shade400),),
+      leading: Icon(
+        Icons.exit_to_app,
+        color: Colors.red,
+      ),
+      title: Text(
+        'ออกจากระบบ',
+        style: TextStyle(color: Colors.red),
+      ),
+      subtitle: Text(
+        'กดที่นี่ เพื่อออกจากระบบ',
+        style: TextStyle(color: Colors.red.shade400),
+      ),
       onTap: () {
         Navigator.of(context).pop();
         signOutProcess();
@@ -136,24 +161,27 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Future<void> signOutProcess()async{
+  Future<void> signOutProcess() async {
     try {
-
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.clear();
 
-      MaterialPageRoute route = MaterialPageRoute(builder: (value)=>Home());
-      Navigator.of(context).pushAndRemoveUntil(route, (value)=>false);
-      
-    } catch (e) {
-    }
+      MaterialPageRoute route = MaterialPageRoute(builder: (value) => Home());
+      Navigator.of(context).pushAndRemoveUntil(route, (value) => false);
+    } catch (e) {}
   }
 
   Widget menuSignUp() {
     return ListTile(
-      leading: Icon(Icons.android),
-      title: Text('สมัครใช้บริการ'),
-      subtitle: Text('สมัครใช้บริการ'),
+      leading: iconSignUp(),
+      title: Text(
+        'สมัครใช้บริการ',
+        style: MyStyle().h2Style,
+      ),
+      subtitle: Text(
+        'คลิกเพื่อ สมัครใช้บริการ',
+        style: MyStyle().h3StylePrimary,
+      ),
       onTap: () {
         Navigator.of(context).pop();
         chooseRegister('Register', true);
@@ -161,15 +189,37 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Icon iconSignUp() {
+    return Icon(
+      Icons.system_update,
+      size: 36,
+      color: MyStyle().dartColor,
+    );
+  }
+
   Widget menuSignIn() {
     return ListTile(
-      leading: Icon(Icons.fingerprint),
-      title: Text('เข้าสู่ระบบ'),
-      subtitle: Text('กรุณาเข้าสู่ระบบก่อน'),
+      leading: iconSignIn(),
+      title: Text(
+        'เข้าสู่ระบบ',
+        style: MyStyle().h2Style,
+      ),
+      subtitle: Text(
+        'กรุณาเข้าสู่ระบบก่อน',
+        style: MyStyle().h3StylePrimary,
+      ),
       onTap: () {
         Navigator.of(context).pop();
         chooseRegister('Login', false);
       },
+    );
+  }
+
+  Icon iconSignIn() {
+    return Icon(
+      Icons.fingerprint,
+      size: 36.0,
+      color: MyStyle().dartColor,
     );
   }
 
@@ -194,8 +244,8 @@ class _HomeState extends State<Home> {
                   }
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.check_box_outline_blank),
-                label: Text('สมัคร เพื่อสั่งอาหาร'),
+                icon: Icon(Icons.touch_app, color: MyStyle().primaryColor,),
+                label: Text('เพื่อสั่งอาหาร',style: MyStyle().h2StylePrimary,),
               ),
             ],
           ),
@@ -217,8 +267,8 @@ class _HomeState extends State<Home> {
                   }
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.check_box_outline_blank),
-                label: Text('สมัคร เพื่อขายอาหาร'),
+                icon: Icon(Icons.fastfood, color: MyStyle().primaryColor,),
+                label: Text('เพื่อขายอาหาร',style: MyStyle().h2StylePrimary,),
               ),
             ],
           ),
@@ -240,8 +290,8 @@ class _HomeState extends State<Home> {
                   }
                   Navigator.of(context).pop();
                 },
-                icon: Icon(Icons.check_box_outline_blank),
-                label: Text('สมัคร เพื่อส่งอาหาร'),
+                icon: Icon(Icons.directions_bike, color: MyStyle().primaryColor,),
+                label: Text('เพื่อส่งอาหาร',style: MyStyle().h2StylePrimary,),
               ),
             ],
           ),
@@ -254,17 +304,39 @@ class _HomeState extends State<Home> {
     showDialog(
       context: context,
       builder: (value) => AlertDialog(
-        title: Text('Choose $title Type'),
+        title: ListTile(
+          leading: iconSignUp(),
+          title: Text(
+            '$title Type',
+            style: MyStyle().h1Style,
+          ),
+        ),
         content: showButtom(registerBool),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel', style: MyStyle().h2Style,),
+          ),
+        ],
       ),
     );
   }
 
   Widget menuHome() {
     return ListTile(
-      leading: Icon(Icons.home),
-      title: Text('หน้าแรก',style: TextStyle(fontSize: 20.0),),
-      subtitle: Text('วันนี้กินอะไรดี',style: TextStyle(fontSize: 16.0),),
+      leading: Icon(
+        Icons.fastfood,
+        size: 36.0,
+        color: MyStyle().dartColor,
+      ),
+      title: Text(
+        'หน้าแรก',
+        style: MyStyle().h2Style,
+      ),
+      subtitle: Text(
+        'วันนี้กินอะไรดี',
+        style: MyStyle().h3StylePrimary,
+      ),
       onTap: () {
         setState(() {
           Navigator.of(context).pop();
@@ -278,14 +350,26 @@ class _HomeState extends State<Home> {
     return Container(
       height: 80.0,
       width: 80.0,
-      child: Image.asset('images/logo.png'),
+      child: Image.asset('images/logo_1024.png'),
     );
   }
 
   Widget showHead() {
     return UserAccountsDrawerHeader(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage('images/bic2.png'), fit: BoxFit.cover),
+      ),
       currentAccountPicture: avatar == null ? showLogo() : showAvatar(),
-      accountName: statusLogin ? Text(nameLogin) : Text('Guest'),
+      accountName: statusLogin
+          ? Text(
+              nameLogin,
+              style: MyStyle().h2StyleWhite,
+            )
+          : Text(
+              'Guest',
+              style: MyStyle().h2StyleWhite,
+            ),
       accountEmail: Text('Login'),
     );
   }
@@ -298,7 +382,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: showDrawer(),
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Send',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: cuttentWidget,
     );
   }

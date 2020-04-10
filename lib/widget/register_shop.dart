@@ -221,10 +221,11 @@ class _RegisterShopState extends State<RegisterShop> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: RaisedButton.icon(
+        color: MyStyle().primaryColor,
         onPressed: () {
           if (file == null) {
-            normalDialog(
-                context, 'ไม่ได้เลือกรูปภาพ', 'กรุณา ถ่ายภาพร้านสวยๆ หรือ ภาพอาหารเด่น');
+            normalDialog(context, 'ไม่ได้เลือกรูปภาพ',
+                'กรุณา ถ่ายภาพร้านสวยๆ หรือ ภาพอาหารเด่น');
           } else if (name == null ||
               name.isEmpty ||
               user == null ||
@@ -235,13 +236,38 @@ class _RegisterShopState extends State<RegisterShop> {
               phone.isEmpty) {
             normalDialog(context, 'มีที่ว่าง', 'กรุณากรอกโดยไม่เว้นช่องว่าง');
           } else {
-            uploadImageToServer();
+            checkUser();
           }
         },
-        icon: Icon(Icons.cloud_upload),
-        label: Text('บันทึกข้อมูล'),
+        icon: Icon(
+          Icons.cloud_upload,
+          color: Colors.white,
+        ),
+        label: Text(
+          'บันทึกข้อมูล',
+          style: MyStyle().h2StyleWhite,
+        ),
       ),
     );
+  }
+
+  Future<void> checkUser() async {
+    String url =
+        '${MyConstant().urlGetUserShopWhereUser}?isAdd=true&User=$user';
+    try {
+      await Dio().get(url).then((response) {
+        if (response.toString() == 'null') {
+          uploadImageToServer();
+        } else {
+          normalDialog(
+            context,
+            'User ซ้ำ',
+            'เปลี่ยน User ใหม่ คะ ? User ซ้ำ',
+            icon: MyStyle().signUpIcon,
+          );
+        }
+      });
+    } catch (e) {}
   }
 
   Future<void> uploadImageToServer() async {
@@ -262,7 +288,6 @@ class _RegisterShopState extends State<RegisterShop> {
   }
 
   Future<void> insertDtaToMySQL(String string) async {
-
     urlImage = '${MyConstant().urlImagePathShop}$string';
 
     String urlAPI =
@@ -270,17 +295,17 @@ class _RegisterShopState extends State<RegisterShop> {
 
     try {
       await Dio().get(urlAPI).then(
-            (response) {
-              if (response.toString()=='true') {
-                
-                MaterialPageRoute route = MaterialPageRoute(builder: (value)=>Home(),);
-                Navigator.of(context).pushAndRemoveUntil(route, (value)=>false);
-
-              } else {
-                normalDialog(context, 'Register False', 'Please Try Again');
-              }
-            },
-          );
+        (response) {
+          if (response.toString() == 'true') {
+            MaterialPageRoute route = MaterialPageRoute(
+              builder: (value) => Home(),
+            );
+            Navigator.of(context).pushAndRemoveUntil(route, (value) => false);
+          } else {
+            normalDialog(context, 'Register False', 'Please Try Again');
+          }
+        },
+      );
     } catch (e) {}
   }
 
