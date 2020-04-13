@@ -278,6 +278,8 @@ class _RegisterUserState extends State<RegisterUser> {
     } catch (e) {}
   }
 
+  
+
   Future<void> insertDtaToMySQL() async {
     String urlAPI =
         'http://movehubs.com/app/addUser.php?isAdd=true&Name=$name&User=$user&Password=$password&Token=$token&Lat=$lat&Lng=$lng';
