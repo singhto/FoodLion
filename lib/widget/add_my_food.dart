@@ -23,7 +23,6 @@ class _AddMyFoodState extends State<AddMyFood> {
   // Method
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     findIdShop();
   }
@@ -39,7 +38,7 @@ class _AddMyFoodState extends State<AddMyFood> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.3,
-      child: file == null ? Image.asset('images/food.png') : Image.file(file),
+      child: file == null ? Image.asset('images/food2.png') : Image.file(file),
     );
   }
 
@@ -150,7 +149,7 @@ class _AddMyFoodState extends State<AddMyFood> {
   Widget saveButton() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: RaisedButton.icon(
+      child: RaisedButton.icon(color: MyStyle().primaryColor,
         onPressed: () {
           if (file == null) {
             normalDialog(
@@ -166,8 +165,8 @@ class _AddMyFoodState extends State<AddMyFood> {
             uploadImage();
           }
         },
-        icon: Icon(Icons.fastfood),
-        label: Text('Save Food'),
+        icon: Icon(Icons.fastfood, color: Colors.white,),
+        label: Text('Save Food', style: MyStyle().h2StyleWhite,),
       ),
     );
   }

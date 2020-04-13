@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:foodlion/models/user_shop_model.dart';
 import 'package:foodlion/scaffold/home.dart';
+import 'package:foodlion/utility/my_constant.dart';
 import 'package:foodlion/utility/my_style.dart';
 import 'package:foodlion/utility/normal_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +49,7 @@ class _SignInshopState extends State<SignInshop> {
             ),
             Container(
               width: 250.0,
-              child: RaisedButton.icon(
+              child: RaisedButton.icon(color: MyStyle().primaryColor,
                 onPressed: () {
                   if (user == null ||
                       user.isEmpty ||
@@ -60,8 +61,8 @@ class _SignInshopState extends State<SignInshop> {
                     checkAuthen();
                   }
                 },
-                icon: Icon(Icons.fingerprint),
-                label: Text('Sign In'),
+                icon: Icon(Icons.fingerprint, color: Colors.white,),
+                label: Text('Sign In', style: MyStyle().h2StyleWhite,),
               ),
             ),
           ],
@@ -72,7 +73,7 @@ class _SignInshopState extends State<SignInshop> {
 
   Future<void> checkAuthen() async {
     String url =
-        'http://movehubs.com/app/getUserWhereUser.php?isAdd=true&User=$user';
+        '${MyConstant().urlGetUserShopWhereUser}?isAdd=true&User=$user';
 
     try {
       Response response = await Dio().get(url);
