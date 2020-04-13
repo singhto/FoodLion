@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:foodlion/utility/my_constant.dart';
 import 'package:foodlion/utility/my_style.dart';
 import 'package:foodlion/utility/normal_dialog.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
@@ -19,7 +20,7 @@ class _RegisterUserState extends State<RegisterUser> {
   // Field
   double lat, lng;
   File file;
-  String name, user, password, phone, urlImage;
+  String name, user, password, phone, urlImage, token = 'token';
 
   // Method
 
@@ -218,12 +219,9 @@ class _RegisterUserState extends State<RegisterUser> {
   Widget uploadButton() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: RaisedButton.icon(
+      child: RaisedButton.icon(color: MyStyle().primaryColor,
         onPressed: () {
-          if (file == null) {
-            normalDialog(
-                context, 'Non Choose Image', 'Please Click Camera or Gallery');
-          } else if (name == null ||
+          if (name == null ||
               name.isEmpty ||
               user == null ||
               user.isEmpty ||
@@ -233,13 +231,34 @@ class _RegisterUserState extends State<RegisterUser> {
               phone.isEmpty) {
             normalDialog(context, 'Have Space', 'Please Fill Every Blank');
           } else {
-            uploadImageToServer();
+            checkUser();
           }
         },
-        icon: Icon(Icons.cloud_upload),
-        label: Text('Register'),
+        icon: Icon(Icons.cloud_upload, color: Colors.white,),
+        label: Text('Register', style: MyStyle().h2StyleWhite,),
       ),
     );
+  }
+
+  Future<void> checkUser() async {
+    String url =
+        '${MyConstant().urlGetUserWhereUser}?isAdd=true&User=$user';
+    try {
+      await Dio().get(url).then((response) {
+        if (response.toString() == 'null') {
+          // uploadImageToServer();
+        } else {
+          normalDialog(
+            context,
+            'User ซ้ำ',
+            'เปลี่ยน User ใหม่ คะ ? User ซ้ำ',
+            icon: MyStyle().signUpIcon,
+          );
+        }
+      });
+    } catch (e) {
+      insertDtaToMySQL();
+    }
   }
 
   Future<void> uploadImageToServer() async {
@@ -254,18 +273,19 @@ class _RegisterUserState extends State<RegisterUser> {
       FormData formData = FormData.from(map);
       await Dio()
           .post(url, data: formData)
-          .then((response) => insertDtaToMySQL(nameFile))
+          .then((response){})
           .catchError(() {});
     } catch (e) {}
   }
 
-  Future<void> insertDtaToMySQL(String string) async {
+  Future<void> insertDtaToMySQL() async {
     String urlAPI =
-        '${MyConstant().urlAddUser}?isAdd=true&Name=$name&User=$user&Password=$password&UrlShop=$urlImage&Lat=$lat&Lng=$lng';
+        'http://movehubs.com/app/addUser.php?isAdd=true&Name=$name&User=$user&Password=$password&Token=$token&Lat=$lat&Lng=$lng';
 
     try {
       await Dio().get(urlAPI).then(
         (response) {
+          print('res==>>>$response');
           if (response.toString() == 'true') {
           } else {
             normalDialog(context, 'Register False', 'Please Try Again');
@@ -279,9 +299,9 @@ class _RegisterUserState extends State<RegisterUser> {
     return ListView(
       padding: EdgeInsets.all(16.0),
       children: <Widget>[
-        MyStyle().showTitle('User Picture'),
-        showPicture(),
-        showButton(),
+        // MyStyle().showTitle('User Picture'),
+        // showPicture(),
+        // showButton(),
         MyStyle().mySizeBox(),
         MyStyle().showTitle('Information'),
         MyStyle().mySizeBox(),

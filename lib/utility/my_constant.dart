@@ -9,7 +9,8 @@ class MyConstant {
   String urlImagePatDelivery = 'http://movehubs.com/app/Delivery/';
   String urlAddDelivery = 'http://movehubs.com/app/addDelivery.php';
   String urlGetAllShop = 'http://movehubs.com/app/getAllShop.php';
-  String urlGetUserShopWhereUser = 'http://movehubs.com/app/getUserWhereUser.php';
+  String urlGetUserShopWhereUser = 'http://movehubs.com/app/getUserShopWhereUser.php';
+  String urlGetUserWhereUser = 'http://movehubs.com/app/getUserWhereUser.php';
   String urlGetAllBanner = 'http://movehubs.com/app/getAllBanner.php';
 
   MyConstant();
